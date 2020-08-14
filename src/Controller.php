@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Application;
 
+use Application\Exceptions\ConfigurationException;
+
+require_once('src/Exceptions/ConfigurationException.php');
 require_once('src/Database.php');
 require_once('src/View.php');
 
@@ -13,6 +16,7 @@ class Controller
 
    private static array $configuration = [];
 
+   private Database $database;
    private array $request;
    private View $view;
 
@@ -23,8 +27,10 @@ class Controller
 
    public function __construct(array $request)
    {
-      $db = new Database(self::$configuration['db']);
-
+      if (empty(self::$configuration['db'])) {
+         throw new ConfigurationException('Configuration error');
+      }
+      $this->database = new Database(self::$configuration['db']);
       $this->request = $request;
       $this->view = new View();
    }
@@ -40,6 +46,7 @@ class Controller
             $data = $this->getRequestPost();
             if (!empty($data)) {
                $created = true;
+               $this->database->createNote($data);
                $viewParams = [
                   'title' => $data['title'],
                   'description' => $data['description']
