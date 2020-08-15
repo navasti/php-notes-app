@@ -35,9 +35,9 @@ class Database
          $created = $this->connection->quote(date('Y-m-d H:i:s'));
          $query = "INSERT INTO notes(title, description, created) 
          VALUES($title, $description, $created)";
-         $result = $this->connection->exec($query);
+         $this->connection->exec($query);
       } catch (Throwable $error) {
-         throw new StorageException('Failed to add a new note', 400);
+         throw new StorageException('Failed to add a new note', 400, $error);
          exit;
       }
    }
