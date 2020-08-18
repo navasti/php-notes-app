@@ -7,12 +7,12 @@ namespace Application;
 require_once('Exceptions\StorageException.php');
 require_once('Exceptions\NotFoundException.php');
 
-use Application\Exceptions\ConfigurationException;
+use PDO;
+use Throwable;
+use PDOException;
 use Application\Exceptions\StorageException;
 use Application\Exceptions\NotFoundException;
-use PDO;
-use PDOException;
-use Throwable;
+use Application\Exceptions\ConfigurationException;
 
 class Database
 {

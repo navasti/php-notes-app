@@ -1,4 +1,4 @@
-<h3>New note</h3>
+<h3>Create a new note</h3>
 <div>
    <form action="/?action=create" method="POST" class="note-form">
       <ul class="ul">

@@ -3,10 +3,10 @@
    <?php if ($note) : ?>
       <ul>
 
-         <li>ID: <?php echo (int) $note['id'] ?></li>
-         <li>Title: <?php echo htmlentities($note['title']) ?></li>
-         <li>Description: <?php echo htmlentities($note['description']) ?></li>
-         <li>Created: <?php echo htmlentities($note['created']) ?></li>
+         <li>ID: <?php echo $note['id'] ?></li>
+         <li>Title: <?php echo $note['title'] ?></li>
+         <li>Description: <?php echo $note['description'] ?></li>
+         <li>Created: <?php echo $note['created'] ?></li>
       </ul>
    <?php else : ?>
       <h3>No notes to display</h3>
