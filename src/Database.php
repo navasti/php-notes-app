@@ -71,6 +71,22 @@ class Database
       }
    }
 
+   public function editNote(int $id, array $data): void
+   {
+      try {
+         $title = $this->connection->quote($data['title']);
+         $description = $this->connection->quote($data['description']);
+         $query =  "
+            UPDATE notes
+            SET title = $title, description = $description
+            WHERE id = $id
+         ";
+         $this->connection->exec($query);
+      } catch (Throwable $error) {
+         throw new StorageException("Couldn't update the note", 400, $error);
+      }
+   }
+
    private function createConnection(array $config): void
    {
       $dsn = "mysql:dbname={$config['database']};host={$config['host']}";

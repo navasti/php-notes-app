@@ -8,6 +8,9 @@
          <li>Description: <?php echo $note['description'] ?></li>
          <li>Created: <?php echo $note['created'] ?></li>
       </ul>
+      <a href="/?action=edit&id=<?php echo $note['id'] ?>">
+         <button>Edit</button>
+      </a>
    <?php else : ?>
       <h3>No notes to display</h3>
    <?php endif; ?>
