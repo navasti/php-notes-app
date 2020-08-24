@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Application;
 
-require_once('Exceptions\StorageException.php');
-require_once('Exceptions\NotFoundException.php');
-
 use PDO;
 use Throwable;
 use PDOException;

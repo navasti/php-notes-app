@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace Application;
 
-use Throwable;
+spl_autoload_register(function (string $classNamespace) {
+   $path = str_replace(['\\', 'Application/'], ['/', ''], $classNamespace);
+   $path = "src/$path.php";
+   require_once($path);
+});
+
+require_once("src/Utils/debug.php");
+
 use Application\Request;
 use Application\Exceptions\AppException;
+use Application\Controllers\NoteController;
+use Application\Controllers\AbstractController;
 use Application\Exceptions\ConfigurationException;
-
-require_once('src/Request.php');
-require_once('src/Utils/debug.php');
-require_once('src/NoteController.php');
 
 $configuration = require_once('config/config.php');
 
@@ -27,7 +32,7 @@ try {
 } catch (AppException $error) {
    echo "<h1>Application Error</h1>";
    echo "<h3>" . $error->getMessage() . "</h3>";
-} catch (Throwable $error) {
+} catch (\Throwable $error) {
    echo "<h1>Error</h1>";
    echo "<h3>" . $error->getMessage() . "</h3>";
 }
