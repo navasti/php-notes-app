@@ -43,6 +43,49 @@ class Database
       return $note;
    }
 
+   public function searchNotes(string $phrase, int $pageNumber, int $pageSize, string $sortBy, string $sortOrder): array
+   {
+      try {
+         $limit = $pageSize;
+         $offset = ($pageNumber - 1) * $pageSize;
+         if (!in_array($sortBy, ['created', 'title'])) {
+            $sortBy = 'title';
+         }
+         if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'desc';
+         }
+         $phrase = $this->connection->quote('%' . $phrase . '%', PDO::PARAM_STR);
+         $query = "
+            SELECT id, title, created 
+            FROM notes
+            WHERE title LIKE ($phrase)
+            ORDER BY $sortBy $sortOrder
+            LIMIT  $offset, $limit
+         ";
+         $result = $this->connection->query($query);
+         $note = $result->fetchAll(PDO::FETCH_ASSOC);
+         return $note;
+      } catch (Throwable $error) {
+         throw new StorageException("Couldn't fetch the notes", 400, $error);
+      }
+   }
+
+   public function getSearchCount(string $phrase): int
+   {
+      try {
+         $phrase = $this->connection->quote('%' . $phrase . '%', PDO::PARAM_STR);
+         $query = "SELECT count(*) AS cn FROM notes WHERE title LIKE($phrase)";
+         $result = $this->connection->query($query);
+         $result = $result->fetch(PDO::FETCH_ASSOC);
+         if ($result === false) {
+            throw new StorageException("Failed attempt to retrieve the number of notes");
+         }
+         return (int) $result['cn'];
+      } catch (Throwable $error) {
+         throw new StorageException("Couldn't get the number of the notes", 400, $error);
+      }
+   }
+
    public function getNotes(int $pageNumber, int $pageSize, string $sortBy, string $sortOrder): array
    {
       try {
