@@ -71,6 +71,16 @@ class Database
       }
    }
 
+   public function deleteNote(int $id): void
+   {
+      try {
+         $query = "DELETE FROM notes WHERE id = $id LIMIT 1";
+         $this->connection->exec($query);
+      } catch (Throwable $error) {
+         throw new StorageException("Couldn't delete the note", 400, $error);
+      }
+   }
+
    public function editNote(int $id, array $data): void
    {
       try {

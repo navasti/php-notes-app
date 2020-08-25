@@ -18,6 +18,9 @@
             case 'created':
                echo "Note has been created";
                break;
+            case 'deleted':
+               echo "Note has been deleted";
+               break;
             case 'edited':
                echo "Note has been edited";
                break;
@@ -49,6 +52,7 @@
                   <td><?php echo $note['created'] ?></td>
                   <td>
                      <a href="/?action=show&id=<?php echo $note['id'] ?>"><button>Details</button></a>
+                     <a href="/?action=delete&id=<?php echo $note['id'] ?>"><button>Delete</button></a>
                   </td>
                </tr>
             <?php endforeach; ?>

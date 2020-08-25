@@ -1,4 +1,4 @@
-<div class="show">
+<div class="delete">
    <?php $note = $params['note'] ?? null; ?>
    <?php if ($note) : ?>
       <ul>
@@ -7,9 +7,10 @@
          <li>Description: <?php echo $note['description'] ?></li>
          <li>Created: <?php echo $note['created'] ?></li>
       </ul>
-      <a href="/?action=edit&id=<?php echo $note['id'] ?>">
-         <button>Edit</button>
-      </a>
+      <form method="post" action="/?action=delete">
+         <input type="hidden" name="id" value="<?php echo $note['id'] ?>">
+         <input type="submit" value="delete">
+      </form>
    <?php else : ?>
       <h3>No notes to display</h3>
    <?php endif; ?>

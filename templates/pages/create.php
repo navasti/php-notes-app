@@ -1,5 +1,5 @@
 <h3>Create a new note</h3>
-<div>
+<div class="create">
    <form action="/?action=create" method="POST" class="note-form">
       <ul class="ul">
          <li>

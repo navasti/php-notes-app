@@ -1,5 +1,5 @@
 <h3>Edit the note</h3>
-<div>
+<div class="edit">
    <?php if (!empty($params['note'])) :  ?>
       <?php $note = $params['note'] ?>
       <form action="/?action=edit" method="POST" class="note-form">

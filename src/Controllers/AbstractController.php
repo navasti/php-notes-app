@@ -44,7 +44,7 @@ abstract class AbstractController
       $this->$action();
    }
 
-   protected function redirect(string $direction, array $params): void
+   final protected function redirect(string $direction, array $params): void
    {
       $location = $direction;
       if (count($params)) {
@@ -59,7 +59,7 @@ abstract class AbstractController
       exit;
    }
 
-   public function action(): string
+   final public function action(): string
    {
       return $this->request->getParam('action', self::DEFAULT_ACTION);
    }
