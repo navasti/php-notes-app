@@ -6,9 +6,10 @@ namespace Application\Controllers;
 
 use Application\View;
 use Application\Request;
-use Application\Database;
+use Application\Model\NoteModel;
 use Application\Exceptions\ConfigurationException;
-
+use Application\Exceptions\NotFoundException;
+use Application\Exceptions\StorageException;
 
 abstract class AbstractController
 {
@@ -16,7 +17,7 @@ abstract class AbstractController
 
    private static array $configuration = [];
 
-   protected Database $database;
+   protected NoteModel $noteModel;
    protected Request $request;
    protected View $view;
 
@@ -30,18 +31,24 @@ abstract class AbstractController
       if (empty(self::$configuration['db'])) {
          throw new ConfigurationException('Configuration error');
       }
-      $this->database = new Database(self::$configuration['db']);
+      $this->noteModel = new NoteModel(self::$configuration['db']);
       $this->request = $request;
       $this->view = new View();
    }
 
    public function run(): void
    {
-      $action = $this->action() . 'Action';
-      if (!method_exists($this, $action)) {
-         $action = self::DEFAULT_ACTION . 'Action';
+      try {
+         $action = $this->action() . 'Action';
+         if (!method_exists($this, $action)) {
+            $action = self::DEFAULT_ACTION . 'Action';
+         }
+         $this->$action();
+      } catch (StorageException $error) {
+         $this->view->render('error', ['message' => $error->getMessage()]);
+      } catch (NotFoundException $error) {
+         $this->redirect('/', ['error' => 'noteNotFound']);
       }
-      $this->$action();
    }
 
    final protected function redirect(string $direction, array $params): void

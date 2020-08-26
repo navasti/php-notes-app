@@ -13,7 +13,7 @@ class NoteController extends AbstractController
    public function createAction(): void
    {
       if ($this->request->hasPost()) {
-         $this->database->createNote([
+         $this->noteModel->create([
             'title' => $this->request->postParam('title'),
             'description' => $this->request->postParam('description')
          ]);
@@ -41,11 +41,11 @@ class NoteController extends AbstractController
       }
 
       if ($phrase) {
-         $notes = $this->database->searchNotes($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
-         $notesAmount = $this->database->getSearchCount($phrase);
+         $notes = $this->noteModel->search($phrase, $pageNumber, $pageSize, $sortBy, $sortOrder);
+         $notesAmount = $this->noteModel->searchCount($phrase);
       } else {
-         $notes = $this->database->getNotes($pageNumber, $pageSize, $sortBy, $sortOrder);
-         $notesAmount = $this->database->getCount();
+         $notes = $this->noteModel->list($pageNumber, $pageSize, $sortBy, $sortOrder);
+         $notesAmount = $this->noteModel->count();
       }
 
       $this->view->render(
@@ -73,7 +73,7 @@ class NoteController extends AbstractController
             'title' => $this->request->postParam('title'),
             'description' => $this->request->postParam('description'),
          ];
-         $this->database->editNote($noteId, $noteData);
+         $this->noteModel->edit($noteId, $noteData);
          $this->redirect('/', ['before' => 'edited']);
       }
       $this->view->render(
@@ -86,7 +86,7 @@ class NoteController extends AbstractController
    {
       if ($this->request->isPost()) {
          $id = (int) $this->request->postParam('id');
-         $this->database->deleteNote($id);
+         $this->noteModel->delete($id);
          $this->redirect('/', ['before' => 'deleted']);
       }
       $this->view->render(
@@ -101,11 +101,6 @@ class NoteController extends AbstractController
       if (!$noteId) {
          $this->redirect('/', ['error' => 'missingNoteId']);
       }
-      try {
-         $note = $this->database->getNote($noteId);
-      } catch (NotFoundException $error) {
-         $this->redirect('/', ['error' => 'noteNotFound']);
-      }
-      return $note;
+      return $note = $this->noteModel->get($noteId);
    }
 }
