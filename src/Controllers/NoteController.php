@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Application\Controllers;
 
-use Application\Exceptions\NotFoundException;
-
 class NoteController extends AbstractController
 {
    private const PAGE_SIZE = 10;

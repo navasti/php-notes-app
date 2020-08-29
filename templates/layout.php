@@ -3,7 +3,7 @@
 <head>
    <title>Notepad</title>
    <meta charset="utf-8">
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <script src="https://kit.fontawesome.com/ea3e93cd21.js" crossorigin="anonymous"></script>
    <link rel="stylesheet" href="/public/styles.css">
 </head>
 
